@@ -1,0 +1,13 @@
+{
+  "editor.defaultFormatter": "biomejs.biome",
+  "cSpell.words": [
+    "dcloudio"
+  ],
+  "editor.codeActionsOnSave": {
+    "source.organizeImports.biome": "explicit",
+    "source.fixAll.biome": "explicit"
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}

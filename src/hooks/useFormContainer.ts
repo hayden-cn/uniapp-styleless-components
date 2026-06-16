@@ -1,0 +1,168 @@
+import { computed, type MaybeRefOrGetter, ref, toValue } from "vue";
+import { SilenceError } from "../errors";
+import { isNil, remove } from "../utils";
+
+interface FormContainerOptions<Data extends Record<string, any>> {
+  data: MaybeRefOrGetter<Data>;
+  items: MaybeRefOrGetter<FormItem<Data>[]>;
+  defaultErrorPrompt?: ErrorPromptType;
+}
+
+type ErrorPromptType = "toast" | "form-item";
+
+export const useFormContainer = <Data extends Record<string, any>>(
+  options: FormContainerOptions<Data>,
+) => {
+  const { defaultErrorPrompt = "toast" } = options;
+  const itemsValidation = ref<FormItemError<Data>>({});
+
+  /**
+   * 验证表单项
+   *
+   * @param errorPrompt 如何提示错误信息 toast | static
+   * - toast: 使用消息提示框进行错误提示，并且在某一项规则验证不通过时，立即停止后面所有规则的校验
+   * - form-item: 在所有验证失败的表单项下方显示错误信息，在表单项规则校验失败时，进行下一个表单项的校验
+   */
+  const validate = async (
+    errorPrompt: ErrorPromptType = defaultErrorPrompt,
+  ) => {
+    let hasError = false;
+    itemsValidation.value = {};
+
+    const formData = toValue(options.data);
+    const formItems = toValue(options.items);
+
+    const innerValidate = async (
+      items: FormItem<Data>[],
+      groupRules: FormRuleItem<Data>[],
+    ) => {
+      for (const item of items) {
+        let itemError = false;
+        const throwError = (errorOrMessage: Error | string) => {
+          const message =
+            errorOrMessage instanceof Error
+              ? errorOrMessage.message
+              : errorOrMessage;
+          if (errorPrompt === "toast") {
+            throw new Error(message);
+          }
+          if (errorPrompt === "form-item") {
+            hasError = true;
+            itemError = true;
+            itemsValidation.value[item.field] = { message };
+          }
+        };
+
+        const rules = item.rules ?? [];
+        // 添加必填规则
+        if (item.required) {
+          rules.unshift({ required: true });
+        }
+        // 合并分组规则
+        rules.unshift(...groupRules);
+        // 合并必填规则
+        const requiredRules = remove(rules, (o) =>
+          Object.hasOwn(o, "required"),
+        );
+        const requiredRule = Object.assign({}, ...requiredRules);
+        rules.unshift(requiredRule);
+
+        if (item.type === "group") {
+          await innerValidate(item.children, rules);
+          continue;
+        }
+
+        const value = formData[item.field];
+        for (const rule of rules) {
+          if (itemError) {
+            continue;
+          }
+
+          // 必填校验
+          if (rule.required) {
+            if (isNil(value) || value === "") {
+              throwError(rule.message || `${item.label}为必填项`);
+            }
+          }
+          // 自定义校验
+          if (rule.validator) {
+            await rule.validator(rule, value).catch(throwError);
+            continue;
+          }
+          // 正则校验
+          if (rule.pattern) {
+            const pattern =
+              rule.pattern instanceof RegExp
+                ? rule.pattern
+                : new RegExp(rule.pattern);
+            if (!pattern.test(value)) {
+              throwError(rule.message || `${item.label}不符合校验规则`);
+            }
+          }
+          // 长度校验
+          const validateValueLen = (
+            val: any,
+            validator: (val: number) => boolean,
+            validateMessages: Record<"string" | "number" | "array", string>,
+          ) => {
+            if (typeof val === "string") {
+              if (!validator(val.length)) {
+                throwError(rule.message || validateMessages.string);
+              }
+            }
+            if (typeof val === "number") {
+              if (!validator(val)) {
+                throwError(rule.message || validateMessages.number);
+              }
+            }
+            if (Array.isArray(val)) {
+              if (!validator(val.length)) {
+                throwError(rule.message || validateMessages.array);
+              }
+            }
+          };
+          if (typeof rule.len === "number") {
+            validateValueLen(value, (val) => val === rule.len, {
+              string: `${item.label}长度必须为${rule.len}`,
+              number: `${item.label}必须为${rule.len}`,
+              array: `${item.label}长度必须为${rule.len}`,
+            });
+          }
+          if (typeof rule.min === "number") {
+            validateValueLen(value, (val) => val >= rule.min, {
+              string: `${item.label}长度必须大于等于${rule.min}`,
+              number: `${item.label}必须大于等于${rule.min}`,
+              array: `${item.label}长度必须大于等于${rule.min}`,
+            });
+          }
+          if (typeof rule.max === "number") {
+            validateValueLen(value, (val) => val <= rule.max, {
+              string: `${item.label}长度必须小于等于${rule.max}`,
+              number: `${item.label}必须小于等于${rule.max}`,
+              array: `${item.label}长度必须小于等于${rule.max}`,
+            });
+          }
+        }
+      }
+    };
+
+    await innerValidate(formItems, []);
+
+    if (hasError) {
+      throw new SilenceError("表单验证失败");
+    }
+  };
+
+  const formProps = computed(() => {
+    return {
+      items: toValue(options.items),
+      itemsValidation: toValue(itemsValidation),
+    };
+  });
+
+  return {
+    validate,
+    itemsValidation,
+    formProps,
+  };
+};
