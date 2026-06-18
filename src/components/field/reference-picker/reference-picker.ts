@@ -1,4 +1,8 @@
-import type { ComponentObjectPropsOptions, PropType } from "vue";
+import type {
+  ComponentObjectPropsOptions,
+  ExtractPropTypes,
+  PropType,
+} from "vue";
 import { baseProps } from "../base";
 import type { textInputProps } from "../text-input/text-input";
 
@@ -23,6 +27,10 @@ interface ReferenceParameters {
   showSearch?: boolean;
 }
 
+type SearchOptions = ExtractPropTypes<typeof textInputProps> & {
+  field?: string;
+};
+
 /**
  * 通过 event channel 透传的设置
  */
@@ -31,9 +39,8 @@ interface ReferenceOptions {
   queryParams?: Record<string, any>;
   requestMethod?: "get" | "post";
   requestOptions?: Record<string, any>;
-  searchOptions?: FieldItem["text"] & {
-    field?: string;
-  };
+  searchOptions?: SearchOptions;
+  // TODO 替换实际的配置
   listOptions?: GlobalConfig["listContainerHook"];
 }
 

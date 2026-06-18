@@ -42,7 +42,7 @@ import type {
   ComponentSize,
   Semantic,
   StyleValue,
-} from "../../type";
+} from "@/types";
 
 interface Props {
   /**
@@ -132,6 +132,13 @@ const props = withDefaults(defineProps<Props>(), {
   hoverClass: "none",
   hoverStartTime: 0,
   hoverStayTime: 200,
+});
+
+defineOptions({
+  options: {
+    styleIsolation: "apply-shared",
+    virtualHost: true,
+  },
 });
 
 type Emit = {

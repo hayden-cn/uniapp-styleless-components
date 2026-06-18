@@ -28,16 +28,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, type ExtractPropTypes } from "vue";
+import { computed } from "vue";
+import type { ClassNameValue } from "@/types";
 import { useField } from "../../../hooks/useField";
-import type { ClassNameValue } from "../../../type";
 import { optionPickerProps } from "./option-picker";
-
-declare global {
-  interface FieldItem {
-    option: ExtractPropTypes<typeof optionPickerProps>;
-  }
-}
 
 const props = defineProps(optionPickerProps);
 
@@ -45,6 +39,10 @@ const modelValue = defineModel<string | number>();
 
 defineOptions({
   inheritAttrs: false,
+  options: {
+    styleIsolation: "apply-shared",
+    virtualHost: true,
+  },
 });
 
 const { wrapperClassNames, showClearBtn, allowClearClassNames, handleClear } =
@@ -66,9 +64,7 @@ const content = computed(() => {
 });
 
 const contentClassNames = computed(() => {
-  const classNames: ClassNameValue = [
-    "field-content field-content-full",
-  ];
+  const classNames: ClassNameValue = ["field-content field-content-full"];
 
   if (!modelValue.value) {
     classNames.push("field-content-empty");
@@ -95,8 +91,6 @@ const onClear = () => {
 </script>
 
 <style>
-@import "../field.css";
-
 .field-content-full {
   width: 100%;
 }

@@ -1,5 +1,5 @@
 import { computed, type Ref } from "vue";
-import type { ClassNameValue } from "../../type";
+import type { ClassNameValue } from "@/types";
 
 interface UseFieldOptions {
   disabled?: boolean;
@@ -8,14 +8,10 @@ interface UseFieldOptions {
   emptyValue?: string;
 }
 
-interface UseFieldReturn {
-  wrapperClassNames: ReturnType<typeof computed>;
-  showClearBtn: ReturnType<typeof computed>;
-  allowClearClassNames: ReturnType<typeof computed>;
-  handleClear: (modelValue: Ref<any>, onChange?: (value: any) => void) => void;
-}
-
-export const useField = (props: UseFieldOptions): UseFieldReturn => {
+/**
+ *
+ */
+export const useField = (props: UseFieldOptions) => {
   const wrapperClassNames = computed(() => {
     const classNames: ClassNameValue = ["field"];
     if (props.disabled) {

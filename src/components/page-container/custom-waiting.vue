@@ -2,20 +2,17 @@
   <view class="custom-waiting">
     <view class="custom-waiting-inner">
       <view class="custom-waiting-spinner"></view>
-      <view class="">{{ locale.loading }}</view>
+      <view class="">加载中...</view>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
-import { useConfig } from "../../plugins/config-provider";
-
-const locale = useConfig("locale", {
-  noData: "暂无数据",
-  loading: "加载中...",
-  unknownError: "未知错误",
-  notice: "提示",
-  warning: "警告",
+defineOptions({
+  options: {
+    styleIsolation: "apply-shared",
+    virtualHost: true,
+  },
 });
 </script>
 

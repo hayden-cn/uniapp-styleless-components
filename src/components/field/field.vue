@@ -54,22 +54,15 @@
   ></empty-content>
 </template>
 
-<script lang="ts">
-declare global {
-  /**
-   * 字段类型参数集合
-   */
-  interface FieldItem {}
-
-  /**
-   * 字段类型
-   */
-  type FieldType = keyof FieldItem;
-}
-</script>
-
 <script setup lang="ts" generic="Type extends FieldType">
-import { computed } from "vue";
+import {
+  type ComponentObjectPropsOptions,
+  computed,
+  type PropType,
+  useAttrs,
+} from "vue";
+import { baseProps } from "./base.js";
+import { type FieldItem, FieldType } from "./common.js";
 import datePicker from "./date-picker/date-picker.vue";
 import emptyContent from "./empty-content/empty-content.vue";
 import logicInput from "./logic-input/logic-input.vue";
@@ -80,61 +73,43 @@ import referencePicker from "./reference-picker/reference-picker.vue";
 import textInput from "./text-input/text-input.vue";
 import textareaInput from "./textarea-input/textarea-input.vue";
 
-interface FieldCommonProps {
-  /**
-   * 是否禁用
-   */
-  disabled?: boolean;
-  /**
-   * 是否只读
-   */
-  readonly?: boolean;
-  /**
-   * 只读模式下，当值为空时的占位符
-   */
-  emptyValue?: string;
-  /**
-   * 提示文字
-   */
-  placeholder?: string;
-  /**
-   * 同一表单或同一行的数据信息
-   */
-  fieldData?: Record<string, any>;
-  /**
-   * 图标
-   */
-  icon?: string;
-  /**
-   * 是否显示清除按钮
-   */
-  allowClear?: boolean;
-  /**
-   * 值改变时回调
-   */
-  onChange?: (value: any) => void;
-}
-
-interface Props extends FieldCommonProps {
+const fieldPropsOptions = {
+  ...baseProps,
   /**
    * 字段类型
    */
-  type?: Type;
+  type: {
+    type: String as unknown as PropType<Type>,
+    required: true,
+  },
   /**
    * 字段透传属性，会覆盖 FieldCommonProps 中的字段值
    */
-  fieldProps?: FieldItem[Type];
-}
+  fieldProps: {
+    type: Object as PropType<FieldItem[Type]>,
+    default: () => ({}),
+  },
+  /**
+   * 值改变时回调
+   */
+  onChange: {
+    type: Function as PropType<(value: any) => void>,
+  },
+} satisfies ComponentObjectPropsOptions;
 
-const props = withDefaults(defineProps<Props>(), {
-  fieldProps: () => ({}) as FieldItem[Type],
-});
+const props = defineProps(fieldPropsOptions);
 
 const modelValue = defineModel<any>();
 
 defineOptions({
   inheritAttrs: false,
+  options: {
+    styleIsolation: "apply-shared",
+    virtualHost: true,
+  },
 });
+
+const attrs = useAttrs();
 
 const mergedProps = computed<any>(() => {
   return Object.assign(
@@ -147,7 +122,42 @@ const mergedProps = computed<any>(() => {
       onChange: props.onChange,
       fieldData: props.fieldData,
     },
+    attrs,
     props.fieldProps,
   );
 });
 </script>
+
+<style>
+.field {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.field-disabled {
+  opacity: 0.7;
+}
+
+.field-content {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.field-content-empty {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.field-clear-icon {
+  --un-icon: url("data:image/svg+xml;utf8,%3Csvg viewBox='0 0 24 24' width='1em' height='1em' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M18 6L6 18M6 6l12 12'/%3E%3C/svg%3E");
+  mask: var(--un-icon) no-repeat;
+  mask-size: 100% 100%;
+  background-color: currentColor;
+  color: gray;
+  width: 1em;
+  height: 1em;
+}
+</style>

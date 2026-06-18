@@ -10,7 +10,7 @@
 {
   "easycom": {
     "custom": {
-      "^my-(.*)": "uniapp-styleless-components/src/components/$1/$1.vue"
+      "^my-(.*)": "uniapp-styleless-components/components/$1/$1.vue"
     }
   }
 }
@@ -20,30 +20,19 @@
 
 ```typescript
 import { createConfigProvider } from "uniapp-styleless-components";
+import appPagesConfig from "@/pages.json";
 
 export function createApp() {
   const app = createSSRApp(App);
 
   app.use(createConfigProvider(), {
-    listContainerHook: {
-      resolvePagination: (pagination) => {
-        return {
-          current: pagination.page,
-          size: pagination.size,
-          total: pagination.total,
-        }
-      },
-      resolveResponse: (response) => {
-        return {
-          records: response.records,
-          pagination: {
-            current: response.current,
-            size: response.size,
-            total: response.total,
-          },
-        }
-      },
-    },
+    // 页面容器配置
+    pageContainer: {
+      // 页面配置信息
+      appPagesConfig: appPagesConfig,
+      // 页面初始化执行
+      init: async () => {},
+    }
   });
 }
 ```

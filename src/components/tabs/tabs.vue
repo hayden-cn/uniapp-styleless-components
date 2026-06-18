@@ -69,7 +69,7 @@ import type {
   ComponentSize,
   Semantic,
   StyleValue,
-} from "../../type";
+} from "@/types";
 
 interface Props {
   defaultValue?: Value;

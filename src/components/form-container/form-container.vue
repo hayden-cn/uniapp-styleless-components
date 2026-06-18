@@ -1,7 +1,101 @@
 <template>
   <view class="form-container" :class="classNames?.root" :style="styles?.root">
     <template v-for="item in items" :key="item.field">
-      <slot></slot>
+      <form-group
+        v-if="item.type === 'group'"
+        :item="item"
+        :config="formConfig"
+        :error-message="itemsValidation[item.field]"
+        v-model="formData[item.field]"
+        :field="item.field"
+        :slots="$slots"
+      >
+        <template #[`${item.field.toString()}-label`]>
+          <slot :name="`${item.field.toString()}-label`"></slot>
+        </template>
+        <template #[`${item.field.toString()}-label-suffix`]>
+          <slot :name="`${item.field.toString()}-label-suffix`"></slot>
+        </template>
+        <form-item
+          v-for="childItem in item.children"
+          :key="childItem.field"
+          :item="childItem"
+          :config="{
+            ...formConfig,
+            ...item.groupConfig,
+          }"
+          :error-message="itemsValidation[childItem.field]"
+          :field="childItem.field"
+          :slots="$slots"
+        >
+          <template #[`${childItem.field.toString()}-label`]>
+            <slot :name="`${childItem.field.toString()}-label`"></slot>
+          </template>
+          <template #[`${childItem.field.toString()}-label-suffix`]>
+            <slot :name="`${childItem.field.toString()}-label-suffix`"></slot>
+          </template>
+          <template #[`${childItem.field.toString()}-prefix`]>
+            <slot :name="`${childItem.field.toString()}-prefix`"></slot>
+          </template>
+          <template #[`${childItem.field.toString()}`]>
+            <slot
+              v-if="$slots[childItem.field.toString()]"
+              :name="`${childItem.field.toString()}`"
+            ></slot>
+            <slot
+              v-else
+              :type="childItem.type"
+              :field-props="{
+                ...pickFieldConfig(formConfig),
+                ...pickFieldConfig(item.groupConfig),
+                ...childItem,
+              }"
+              :field-data="formData"
+            ></slot>
+            <!-- <field v-else v-model="formData[childItem.field]"></field> -->
+          </template>
+          <template #[`${childItem.field.toString()}-suffix`]>
+            <slot :name="`${childItem.field.toString()}-suffix`"></slot>
+          </template>
+        </form-item>
+      </form-group>
+      <form-item
+        v-else
+        :item="item"
+        :config="formConfig"
+        :error-message="itemsValidation[item.field]"
+        :field="item.field"
+        :slots="$slots"
+      >
+        <template #[`${item.field.toString()}-label`]>
+          <slot :name="`${item.field.toString()}-label`"></slot>
+        </template>
+        <template #[`${item.field.toString()}-label-suffix`]>
+          <slot :name="`${item.field.toString()}-label-suffix`"></slot>
+        </template>
+        <template #[`${item.field.toString()}-prefix`]>
+          <slot :name="`${item.field.toString()}-prefix`"></slot>
+        </template>
+        <template #[`${item.field.toString()}`]>
+          <slot
+            v-if="$slots[item.field.toString()]"
+            :name="`${item.field.toString()}`"
+          ></slot>
+          <field
+            v-else
+            :type="item.type"
+            :field-props="{
+              ...pickFieldConfig(formConfig),
+              ...item,
+            }"
+            :field-datas="formData"
+            v-model="formData[item.field]"
+          ></field>
+        </template>
+        <template #[`${item.field.toString()}-suffix`]>
+          <slot :name="`${item.field.toString()}-suffix`"></slot>
+        </template>
+      </form-item>
     </template>
   </view>
 </template>
@@ -148,13 +242,9 @@ declare global {
 </script>
 
 <script setup lang="ts" generic="Data extends Record<string, any> = object">
-import { reactive } from "vue";
-import {
-  ClassNameValue,
-  Semantic,
-  StyleValue,
-  TextAlignType,
-} from "../../type";
+import { omit, pick } from "lodash-es";
+import { computed, reactive } from "vue";
+import { ClassNameValue, Semantic, StyleValue, TextAlignType } from "@/types";
 
 interface Props extends BaseFormItemProps {
   /**
@@ -169,7 +259,7 @@ interface Props extends BaseFormItemProps {
 
 const formData = defineModel<Data>({ default: reactive({}) });
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   items: () => [],
   itemsValidation: () => ({}),
   disabled: false,
@@ -180,4 +270,22 @@ withDefaults(defineProps<Props>(), {
   classNames: () => ({}),
   styles: () => ({}),
 });
+
+defineOptions({
+  options: {
+    styleIsolation: "apply-shared",
+    virtualHost: true,
+  },
+});
+
+/**
+ * 透传给表单项的配置
+ */
+const formConfig = computed(() => {
+  return omit(props, "items", "itemsValidation");
+});
+
+const pickFieldConfig = (config: BaseFormItemProps = {}) => {
+  return pick(config, ["disabled", "readonly", "emptyValue", "allowClear"]);
+};
 </script>

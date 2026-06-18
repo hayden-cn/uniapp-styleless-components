@@ -89,7 +89,7 @@ import {
   useSlots,
   watch,
 } from "vue";
-import type { ClassNameValue, StyleValue } from "../../type";
+import type { ClassNameValue, StyleValue } from "@/types";
 import { isNil } from "../../utils";
 
 interface Props {
@@ -185,9 +185,7 @@ const itemStyles = computed(() => {
  * 必填标签 class
  */
 const requiredClassNames = computed(() => {
-  const classNames: ClassNameValue = [
-    "form-item-required",
-  ];
+  const classNames: ClassNameValue = ["form-item-required"];
   if (props.item.classNames?.required) {
     classNames.push(props.item.classNames.required);
   }
@@ -258,9 +256,7 @@ watch(
  * 表单标题 class
  */
 const titleClassNames = computed(() => {
-  const classNames: ClassNameValue = [
-    "form-item-title",
-  ];
+  const classNames: ClassNameValue = ["form-item-title"];
   if (props.item.classNames?.title) {
     classNames.push(props.item.classNames.title);
   }
@@ -338,9 +334,7 @@ const contentAlign = computed(() => {
  * 表单内容 class
  */
 const contentClassNames = computed(() => {
-  const classNames: ClassNameValue = [
-    "form-item-content",
-  ];
+  const classNames: ClassNameValue = ["form-item-content"];
 
   if (props.item.classNames?.content) {
     classNames.push(props.item.classNames.content);
@@ -373,9 +367,7 @@ const contentStyles = computed(() => {
  * 错误提示信息 class
  */
 const errorMessageClassNames = computed(() => {
-  const classNames: ClassNameValue = [
-    "form-item-error",
-  ];
+  const classNames: ClassNameValue = ["form-item-error"];
 
   if (props.item.classNames?.errorMessage) {
     classNames.push(props.item.classNames.errorMessage);

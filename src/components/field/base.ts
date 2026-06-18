@@ -43,10 +43,4 @@ export const baseProps = {
   allowClear: {
     type: Boolean,
   },
-  /**
-   * 值改变时回调
-   */
-  onChange: {
-    type: Function as PropType<(value: any) => void>,
-  },
 } satisfies ComponentObjectPropsOptions;

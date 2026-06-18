@@ -10,17 +10,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, type ExtractPropTypes } from "vue";
-import type { ClassNameValue } from "../../../type";
+import { computed } from "vue";
+import type { ClassNameValue } from "@/types";
 import { logicInputProps } from "./logic-input";
 
 type LogicValue = string | number | boolean;
-
-declare global {
-  interface FieldItem {
-    logic: ExtractPropTypes<typeof logicInputProps>;
-  }
-}
 
 const props = defineProps(logicInputProps);
 
@@ -28,6 +22,10 @@ const modelValue = defineModel<LogicValue>();
 
 defineOptions({
   inheritAttrs: false,
+  options: {
+    styleIsolation: "apply-shared",
+    virtualHost: true,
+  },
 });
 
 const checked = computed(() => {

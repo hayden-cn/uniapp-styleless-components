@@ -3,9 +3,22 @@
 </template>
 
 <script setup lang="ts">
-interface ConfigProviderOptions {
-  config: GlobalConfig
+import {
+  type ConfigProviderOptions,
+  useConfig,
+} from "@/plugins/config-provider";
+
+interface ConfigProviderProps {
+  config: ConfigProviderOptions;
 }
-const props = defineProps<ConfigProviderOptions>()
-useConfig(props.config)
+const props = defineProps<ConfigProviderProps>();
+
+defineOptions({
+  options: {
+    styleIsolation: "apply-shared",
+    virtualHost: true,
+  },
+});
+
+useConfig(props.config);
 </script>

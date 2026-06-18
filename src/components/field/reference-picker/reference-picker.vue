@@ -27,17 +27,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, type ExtractPropTypes, toValue } from "vue";
+import { computed, toValue } from "vue";
+import type { ClassNameValue } from "@/types";
 import { useField } from "../../../hooks/useField";
-import type { ClassNameValue } from "../../../type";
 import { isNil, stringifyQueryParams } from "../../../utils";
 import { referencePickerProps } from "./reference-picker";
-
-declare global {
-  interface FieldItem {
-    reference: ExtractPropTypes<typeof referencePickerProps>;
-  }
-}
 
 const props = defineProps(referencePickerProps);
 
@@ -45,6 +39,10 @@ const modelValue = defineModel<string | string[]>();
 
 defineOptions({
   inheritAttrs: false,
+  options: {
+    styleIsolation: "apply-shared",
+    virtualHost: true,
+  },
 });
 
 const { wrapperClassNames, showClearBtn, allowClearClassNames, handleClear } =
@@ -128,9 +126,7 @@ const content = computed(() => {
 });
 
 const contentClassNames = computed(() => {
-  const classNames: ClassNameValue = [
-    "field-content field-reference-content",
-  ];
+  const classNames: ClassNameValue = ["field-content field-reference-content"];
 
   if (selectedItems.value.length === 0) {
     classNames.push("field-content-empty");
@@ -239,8 +235,6 @@ const onClear = () => {
 </script>
 
 <style>
-@import "../field.css";
-
 .field-reference-body {
   height: 100%;
   flex: 1;

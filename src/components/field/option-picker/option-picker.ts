@@ -3,12 +3,10 @@ import { baseProps } from "../base";
 
 type Value = string | number;
 
-declare global {
-  type OptionItem = {
-    label: string;
-    value: Value;
-  };
-}
+type OptionItem = {
+  label: string;
+  value: Value;
+};
 
 export const optionPickerProps = {
   ...baseProps,

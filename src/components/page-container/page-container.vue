@@ -12,15 +12,15 @@
       </slot>
     </view>
 
-    <view v-if="isCustomNavigationBar && showNavigationBar">
+    <view v-if="needShowCustomNavigationBar">
       <slot name="navigation-bar">
         <custom-navigation-bar
-          :show-back-btn="showBackBtn && !(route.isHomePage || route.isTabBar)"
-          :title="route.style.navigationBarTitleText"
+          :show-back-btn="needShowBackBtn"
+          :title="currentRoute.style?.navigationBarTitleText"
           :styles="{
             root: {
-              color: route.style.navigationBarTextStyle,
-              backgroundColor: route.style.navigationBarBackgroundColor,
+              color: currentRoute.style?.navigationBarTextStyle,
+              backgroundColor: currentRoute.style?.navigationBarBackgroundColor,
             },
           }"
         ></custom-navigation-bar>
@@ -30,7 +30,9 @@
     <view
       class="page-container-content"
       :class="[
-        scrollable ? 'page-container-scrollable' : 'page-container-overflow-hidden',
+        scrollable
+          ? 'page-container-scrollable'
+          : 'page-container-overflow-hidden',
         classNames?.content,
       ]"
       :style="[styles?.content]"
@@ -41,14 +43,14 @@
     <view class="page-container-footer">
       <!-- 自定义底部导航栏 -->
       <custom-tabbar
-        v-if="isCustomTabbar && route.isTabBar && tabBar"
-        :route="route"
+        v-if="needShowCustomTabbar"
+        :route="currentRoute"
         :tabbar="tabBar"
       ></custom-tabbar>
 
       <!-- 底部安全区 -->
       <view
-        v-if="route.isTabBar ? isCustomTabbar : showBottomSafeArea"
+        v-if="needShowSafeBottomArea"
         class="page-container-safe-bottom"
         :style="[{ height: `${safeBottomHeight}px` }]"
       ></view>
@@ -57,55 +59,86 @@
 </template>
 
 <script setup lang="ts">
-import customNavigationBar from './custom-navigation-bar.vue'
-import customTabbar from './custom-tabbar.vue'
-import customWaiting from './custom-waiting.vue'
+import { computed, onMounted, ref } from "vue";
+import { usePageContainer } from "@/hooks/usePageContainer.js";
+import type { ClassNameValue, Semantic, StyleValue } from "@/types.js";
+import customNavigationBar from "./custom-navigation-bar.vue";
+import customTabbar from "./custom-tabbar.vue";
+import customWaiting from "./custom-waiting.vue";
 
 interface Props {
-  scrollable?: boolean
-  showNavigationBar?: boolean
-  showBackBtn?: boolean
-  showBottomSafeArea?: boolean
-  classNames?: Semantic<SemanticDOM, ClassNameValue>
-  styles?: Semantic<SemanticDOM, StyleValue>
+  scrollable?: boolean;
+  showNavigationBar?: boolean;
+  showBackBtn?: boolean;
+  showBottomSafeArea?: boolean;
+  classNames?: Semantic<SemanticDOM, ClassNameValue>;
+  styles?: Semantic<SemanticDOM, StyleValue>;
 }
 
-type SemanticDOM = 'root' | 'content'
+type SemanticDOM = "root" | "content";
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   scrollable: false,
   showBackBtn: true,
   showNavigationBar: true,
   showBottomSafeArea: true,
-})
+});
 
-const { init } = useInit() // auto-import: provide useInit composable in consuming app
+defineOptions({
+  options: {
+    styleIsolation: "apply-shared",
+    virtualHost: true,
+  },
+});
 
-const waiting = ref(true)
+const { safeBottomHeight, currentRoute, tabBar, init } = usePageContainer();
+
+const waiting = ref(true);
 
 onMounted(async () => {
-  await init()
-  waiting.value = false
-})
+  await init?.();
+  waiting.value = false;
+});
 
-const { safeBottomHeight } = usePageContainer()
+const needShowCustomNavigationBar = computed(() => {
+  return (
+    currentRoute.value.style?.navigationStyle === "custom" &&
+    props.showNavigationBar
+  );
+});
 
-const { route, tabBar } = useRoute() // auto-import: provide useRoute composable in consuming app
+const needShowBackBtn = computed(() => {
+  // 首页或者 tabBar 页面都不需要显示返回按钮
+  // 其余页面有 props.showBackBtn 控制，默认为 true
+  return (
+    props.showBackBtn &&
+    !(currentRoute.value.isHomePage || currentRoute.value.isTabBar)
+  );
+});
 
-const isCustomNavigationBar = computed(() => {
-  return route.value.style.navigationStyle === 'custom'
-})
-
+// 是否自定义 tabbar
 const isCustomTabbar = computed(() => {
-  return tabBar.value?.custom === true
-})
+  return tabBar.value?.custom === true;
+});
+
+const needShowCustomTabbar = computed(() => {
+  return isCustomTabbar.value && currentRoute.value.isTabBar && tabBar.value;
+});
+
+const needShowSafeBottomArea = computed(() => {
+  // 如果是 tabbar 页面，交由是否自定义 tabbar 决定
+  // 否则通过 props.showBottomSafeArea 手动控制
+  return currentRoute.value.isTabBar
+    ? isCustomTabbar.value
+    : props.showBottomSafeArea;
+});
 
 const waitingStyles = computed(() => {
   const style: StyleValue = {
-    backgroundColor: route.value.style.navigationBarBackgroundColor,
-  }
-  return style
-})
+    backgroundColor: currentRoute.value.style?.navigationBarBackgroundColor,
+  };
+  return style;
+});
 </script>
 
 <style>

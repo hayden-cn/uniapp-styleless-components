@@ -32,16 +32,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, type ExtractPropTypes } from "vue";
+import { computed } from "vue";
+import type { ClassNameValue } from "@/types";
 import { useField } from "../../../hooks/useField";
-import type { ClassNameValue } from "../../../type";
 import { textareaInputProps } from "./textarea-input";
-
-declare global {
-  interface FieldItem {
-    textarea: ExtractPropTypes<typeof textareaInputProps>;
-  }
-}
 
 const props = defineProps(textareaInputProps);
 
@@ -49,6 +43,10 @@ const modelValue = defineModel<string>();
 
 defineOptions({
   inheritAttrs: false,
+  options: {
+    styleIsolation: "apply-shared",
+    virtualHost: true,
+  },
 });
 
 const { wrapperClassNames, showClearBtn, allowClearClassNames, handleClear } =
@@ -103,8 +101,6 @@ const bindEvent = (target: EventTarget, e: any) => {
 </script>
 
 <style>
-@import "../field.css";
-
 .textarea-readonly {
   word-break: break-all;
   padding: 0.75rem 0;

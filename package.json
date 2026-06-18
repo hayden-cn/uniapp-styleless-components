@@ -6,8 +6,8 @@
   "types": "src/index.ts",
   "exports": {
     ".": "./src/index.ts",
-    "./src/*": "./src/*",
-    "./types": "./src/type.ts"
+    "./types": "./src/types.ts",
+    "./components/*": "./src/components/*"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -22,7 +22,8 @@
   "author": "hayden",
   "license": "MIT",
   "files": [
-    "src"
+    "src",
+    "tsconfig.json"
   ],
   "devEngines": {
     "packageManager": {
@@ -36,6 +37,7 @@
     "@biomejs/biome": "^2.4.16",
     "@dcloudio/types": "^3.4.31",
     "@dcloudio/uni-app": "3.0.0-alpha-5010320260611001",
+    "@types/lodash-es": "^4.17.12",
     "typescript": "^6.0.3",
     "typescript-builtins-extended": "^0.2.1",
     "vue": "^3.4.21"
@@ -43,5 +45,8 @@
   "peerDependencies": {
     "@dcloudio/uni-app": ">=3.0.0",
     "vue": "^3.4.21"
+  },
+  "dependencies": {
+    "lodash-es": "^4.18.1"
   }
 }

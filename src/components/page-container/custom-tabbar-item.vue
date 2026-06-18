@@ -6,13 +6,28 @@
   >
     <view class="custom-tabbar-item-inner">
       <view v-if="iconfont" class="tabbar_iconfont" :style="iconfontStyle">
-        <view v-if="iconfont.length === 1" class="custom-tabbar-item-icon-text">{{ iconfont }}</view>
-        <view v-else :class="iconfont" class="custom-tabbar-item-icon-text"></view>
+        <view
+          v-if="iconfont.length === 1"
+          class="custom-tabbar-item-icon-text"
+          >{{ iconfont }}</view
+        >
+        <view
+          v-else
+          :class="iconfont"
+          class="custom-tabbar-item-icon-text"
+        ></view>
       </view>
       <view v-else-if="iconPath">
-        <image class="custom-tabbar-item-icon-image" :src="iconPath" mode="scaleToFill" />
+        <image
+          class="custom-tabbar-item-icon-image"
+          :src="iconPath"
+          mode="scaleToFill"
+        />
       </view>
-      <view :class="[iconfont || iconPath ? 'custom-tabbar-item-text-small' : '']">{{ text }}</view>
+      <view
+        :class="[iconfont || iconPath ? 'custom-tabbar-item-text-small' : '']"
+        >{{ text }}</view
+      >
       <view v-if="badge" class="custom-tabbar-item-badge-wrapper">
         <view
           v-if="isDotBadge"
@@ -32,62 +47,72 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
+import type { StyleValue } from "@/types";
+
 interface Props {
-  active: boolean
-  pagePath: string
-  text?: string
-  iconfont?: UniTabBarItemIconFont
-  iconPath?: string
-  selectedIconPath?: string
-  color?: string
-  selectedColor?: string
-  badge?: boolean | string
+  active: boolean;
+  pagePath: string;
+  text?: string;
+  iconfont?: Record<string, any>;
+  iconPath?: string;
+  selectedIconPath?: string;
+  color?: string;
+  selectedColor?: string;
+  badge?: boolean | string;
 }
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
+
+defineOptions({
+  options: {
+    styleIsolation: "apply-shared",
+    virtualHost: true,
+  },
+});
 
 const iconfont = computed(() => {
-  const defaultIconfont = props.iconfont?.text
-  const selectedIconFont = props.iconfont?.selectedText ?? defaultIconfont
-  return props.active ? selectedIconFont : defaultIconfont
-})
+  const defaultIconfont = props.iconfont?.text;
+  const selectedIconFont = props.iconfont?.selectedText ?? defaultIconfont;
+  return props.active ? selectedIconFont : defaultIconfont;
+});
 
 const iconfontStyle = computed<StyleValue>(() => {
-  const iconfont = props.iconfont
-  const style: StyleValue = {}
+  const iconfont = props.iconfont;
+  const style: StyleValue = {};
 
-  const fontSize = iconfont?.fontSize
+  const fontSize = iconfont?.fontSize;
   if (fontSize) {
-    style.fontSize = fontSize
+    style.fontSize = fontSize;
   }
 
-  const specialColor = props.active ? iconfont?.selectedColor : iconfont?.color
+  const specialColor = props.active ? iconfont?.selectedColor : iconfont?.color;
   if (specialColor) {
-    style.color = specialColor
+    style.color = specialColor;
   }
-  return style
-})
+  return style;
+});
 
 const iconPath = computed(() => {
-  const defaultIconPath = props.iconPath ? `/${props.iconPath}` : undefined
+  const defaultIconPath = props.iconPath ? `/${props.iconPath}` : undefined;
   const selectedIconPath = props.selectedIconPath
     ? `/${props.selectedIconPath}`
-    : defaultIconPath
+    : defaultIconPath;
 
-  return props.active ? selectedIconPath : defaultIconPath
-})
+  return props.active ? selectedIconPath : defaultIconPath;
+});
 
 const isDotBadge = computed(() => {
-  return typeof props.badge === 'boolean'
-})
+  return typeof props.badge === "boolean";
+});
 
 const onTabbarClick = () => {
-  if (props.active) return
+  if (props.active) return;
 
   uni.switchTab({
     url: `/${props.pagePath}`,
-  })
-}
+  });
+};
 </script>
 
 <style>

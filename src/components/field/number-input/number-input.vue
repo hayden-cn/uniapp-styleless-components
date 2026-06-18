@@ -25,16 +25,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, type ExtractPropTypes } from "vue";
+import { computed } from "vue";
+import type { ClassNameValue } from "@/types";
 import { useField } from "../../../hooks/useField";
-import type { ClassNameValue } from "../../../type";
 import { numberInputProps } from "./number-input";
-
-declare global {
-  interface FieldItem {
-    number: ExtractPropTypes<typeof numberInputProps>;
-  }
-}
 
 const props = defineProps(numberInputProps);
 
@@ -42,6 +36,10 @@ const modelValue = defineModel<string | number>();
 
 defineOptions({
   inheritAttrs: false,
+  options: {
+    styleIsolation: "apply-shared",
+    virtualHost: true,
+  },
 });
 
 const { wrapperClassNames, showClearBtn, allowClearClassNames, handleClear } =
@@ -79,6 +77,4 @@ const bindEvent = (target: EventTarget, e: any) => {
 };
 </script>
 
-<style>
-@import "../field.css";
-</style>
+

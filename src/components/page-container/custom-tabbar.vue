@@ -1,7 +1,11 @@
 <template>
   <view class="custom-tabbar">
     <view class="custom-tabbar-border"></view>
-    <view v-for="item in tabbar.list" :key="item.pagePath" class="custom-tabbar-item">
+    <view
+      v-for="item in tabbar.list"
+      :key="item.pagePath"
+      class="custom-tabbar-item"
+    >
       <custom-tabbar-item
         :active="item.pagePath === route.route"
         :page-path="item.pagePath"
@@ -19,26 +23,34 @@
 </template>
 
 <script setup lang="ts">
-import customTabbarItem from './custom-tabbar-item.vue'
+import { onMounted } from "vue";
+import customTabbarItem from "./custom-tabbar-item.vue";
 
 interface Props {
   /**
    * 路由信息
    */
-  route: UniRoute
+  route: Record<string, any>;
   /**
    * tabbar信息
    */
-  tabbar: UniTabBar
+  tabbar: Record<string, any>;
 }
 
-defineProps<Props>()
+defineProps<Props>();
+
+defineOptions({
+  options: {
+    styleIsolation: "apply-shared",
+    virtualHost: true,
+  },
+});
 
 onMounted(() => {
   // #ifdef H5
-  uni.hideTabBar()
+  uni.hideTabBar();
   // #endif
-})
+});
 </script>
 
 <style>

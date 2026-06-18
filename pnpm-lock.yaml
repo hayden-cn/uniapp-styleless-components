@@ -206,6 +206,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      lodash-es:
+        specifier: ^4.18.1
+        version: 4.18.1
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.4.16
@@ -216,6 +220,9 @@ importers:
       '@dcloudio/uni-app':
         specifier: 3.0.0-alpha-5010320260611001
         version: 3.0.0-alpha-5010320260611001(@dcloudio/types@3.4.31)(postcss@8.5.15)(rollup@4.62.0)(vite@6.4.3)(vue@3.5.38(typescript@6.0.3))
+      '@types/lodash-es':
+        specifier: ^4.17.12
+        version: 4.17.12
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
@@ -329,6 +336,12 @@ packages:
     resolution: {integrity: sha512-Mn3Fwi3SA5fgmfCPqmzpWF2DLZnms3BVAhM088nTnGrTZmHS3wwIjcoZPqpXeNgd3DrrLH6xp8vTLIBuJoZiXw==}
     engines: {node: '>=14.21.3'}
     cpu: [arm64]
+    os: [darwin]
+
+  '@biomejs/cli-darwin-x64@2.5.0':
+    resolution: {integrity: sha512-rg3VPL5P8mYro6pqlXYXuJWph21slVp3SZtAqWSrkZs40d2gTzYmHF8E/X1iTID25btmNKltNDJ926sqVBp7DQ==}
+    engines: {node: '>=14.21.3'}
+    cpu: [x64]
     os: [darwin]
 
   '@biomejs/cli-linux-arm64-musl@2.5.0':
@@ -915,6 +928,12 @@ packages:
   '@types/estree@1.0.9':
     resolution: {integrity: sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg==}
 
+  '@types/lodash-es@4.17.12':
+    resolution: {integrity: sha512-0NgftHUcV4v34VhXm8QBSftKVXtbkBG3ViCjs6+eJ5a6y6Mi/jiFGPc1sC7QK+9BFhWrURE3EOggmWaSxL9OzQ==}
+
+  '@types/lodash@4.17.24':
+    resolution: {integrity: sha512-gIW7lQLZbue7lRSWEFql49QJJWThrTFFeIMJdp3eH4tKoxm1OvEPg02rm4wCCSHS0cL3/Fizimb35b7k8atwsQ==}
+
   '@vitejs/plugin-basic-ssl@1.2.0':
     resolution: {integrity: sha512-mkQnxTkcldAzIsomk1UuLfAu9n+kpQ3JbHcpCp7d2Oo6ITtji8pHS3QToOWjhPFvNQSnhlkAjmGbhv2QvwO/7Q==}
     engines: {node: '>=14.21.3'}
@@ -1277,6 +1296,9 @@ packages:
   localstorage-polyfill@1.0.1:
     resolution: {integrity: sha512-m4iHVZxFH5734oQcPKU08025gIz2+4bjWR9lulP8ZYxEJR0BpA0w32oJmkzh8y3UI9ci7xCBehQDc3oA1X+VHw==}
     engines: {node: '>=6'}
+
+  lodash-es@4.18.1:
+    resolution: {integrity: sha512-J8xewKD/Gk22OZbhpOVSwcs60zhd95ESDwezOFuA3/099925PdHJ7OFHNTGtajL3AlZkykD32HykiMo+BIBI8A==}
 
   lodash.camelcase@4.3.0:
     resolution: {integrity: sha512-TwuEnCnxbc3rAvhf/LbG7tJUDzhqXyFnv3dtzLOPgCG/hODL7WFnsbwktkD7yUV0RrreP/l1PALq/YSg6VvjlA==}
@@ -1781,6 +1803,7 @@ snapshots:
   '@biomejs/biome@2.5.0':
     optionalDependencies:
       '@biomejs/cli-darwin-arm64': 2.5.0
+      '@biomejs/cli-darwin-x64': 2.5.0
       '@biomejs/cli-linux-arm64': 2.5.0
       '@biomejs/cli-linux-arm64-musl': 2.5.0
       '@biomejs/cli-linux-x64': 2.5.0
@@ -1789,6 +1812,9 @@ snapshots:
       '@biomejs/cli-win32-x64': 2.5.0
 
   '@biomejs/cli-darwin-arm64@2.5.0':
+    optional: true
+
+  '@biomejs/cli-darwin-x64@2.5.0':
     optional: true
 
   '@biomejs/cli-linux-arm64-musl@2.5.0':
@@ -2330,6 +2356,12 @@ snapshots:
 
   '@types/estree@1.0.9': {}
 
+  '@types/lodash-es@4.17.12':
+    dependencies:
+      '@types/lodash': 4.17.24
+
+  '@types/lodash@4.17.24': {}
+
   '@vitejs/plugin-basic-ssl@1.2.0(vite@6.4.3)':
     dependencies:
       vite: 6.4.3
@@ -2715,6 +2747,8 @@ snapshots:
       quansync: 0.2.11
 
   localstorage-polyfill@1.0.1: {}
+
+  lodash-es@4.18.1: {}
 
   lodash.camelcase@4.3.0: {}
 

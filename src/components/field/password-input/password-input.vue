@@ -31,16 +31,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, type ExtractPropTypes, ref } from "vue";
+import { computed, ref } from "vue";
+import type { ClassNameValue } from "@/types";
 import { useField } from "../../../hooks/useField";
-import type { ClassNameValue } from "../../../type";
 import { passwordInputProps } from "./password-input";
-
-declare global {
-  interface FieldItem {
-    password: ExtractPropTypes<typeof passwordInputProps>;
-  }
-}
 
 const props = defineProps(passwordInputProps);
 
@@ -48,6 +42,10 @@ const modelValue = defineModel<string>();
 
 defineOptions({
   inheritAttrs: false,
+  options: {
+    styleIsolation: "apply-shared",
+    virtualHost: true,
+  },
 });
 
 const { wrapperClassNames, showClearBtn, allowClearClassNames, handleClear } =
@@ -124,8 +122,6 @@ const handleToggle = () => {
 </script>
 
 <style>
-@import "../field.css";
-
 .field-content-readonly-hidden {
   overflow-y: hidden;
 }

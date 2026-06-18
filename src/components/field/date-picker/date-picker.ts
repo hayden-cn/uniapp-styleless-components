@@ -4,6 +4,12 @@ import { baseProps } from "../base";
 export const datePickerProps = {
   ...baseProps,
   /**
+   * 值改变时回调
+   */
+  onChange: {
+    type: Function as PropType<(value: string | undefined) => void>,
+  },
+  /**
    * 开始日期
    */
   start: {

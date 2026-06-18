@@ -2,7 +2,7 @@
   <view :class="wrapperClassNames">
     <view v-if="icon" :class="[icon]"></view>
     <view v-if="readonly" :class="contentClassNames">
-      {{ modelValue ?? emptyValue }}
+      {{ modelValue || emptyValue }}
     </view>
     <picker
       v-else
@@ -29,16 +29,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, type ExtractPropTypes } from "vue";
+import { computed } from "vue";
+import type { ClassNameValue } from "@/types";
 import { useField } from "../../../hooks/useField";
-import type { ClassNameValue } from "../../../type";
 import { datePickerProps } from "./date-picker";
-
-declare global {
-  interface FieldItem {
-    date: ExtractPropTypes<typeof datePickerProps>;
-  }
-}
 
 const props = defineProps(datePickerProps);
 
@@ -46,15 +40,17 @@ const modelValue = defineModel<string>();
 
 defineOptions({
   inheritAttrs: false,
+  options: {
+    styleIsolation: "apply-shared",
+    virtualHost: true,
+  },
 });
 
 const { wrapperClassNames, showClearBtn, allowClearClassNames, handleClear } =
   useField(props);
 
 const contentClassNames = computed(() => {
-  const classNames: ClassNameValue = [
-    "field-content field-content-full",
-  ];
+  const classNames: ClassNameValue = ["field-content field-content-full"];
 
   if (!modelValue.value) {
     classNames.push("field-content-empty");
@@ -86,8 +82,6 @@ const onClear = () => {
 </script>
 
 <style>
-@import "../field.css";
-
 .field-content-full {
   width: 100%;
 }

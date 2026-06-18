@@ -1,15 +1,8 @@
 <template>
   <view class="water-mark-overlay">
     <view class="water-mark-wrapper">
-      <view
-        class="water-mark-content"
-        :style="wrapperContentStyle"
-      >
-        <view
-          v-for="i in count"
-          :key="i"
-          class="water-mark-item"
-        >
+      <view class="water-mark-content" :style="wrapperContentStyle">
+        <view v-for="i in count" :key="i" class="water-mark-item">
           <slot>
             <text>{{ content }}</text>
           </slot>
@@ -20,79 +13,92 @@
 </template>
 
 <script setup lang="ts">
-import type { CSSProperties } from 'vue'
+import {
+  type CSSProperties,
+  getCurrentInstance,
+  onMounted,
+  ref,
+  watch,
+} from "vue";
 
 interface Props {
-  content?: string
+  content?: string;
 }
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
+
+defineOptions({
+  options: {
+    styleIsolation: "apply-shared",
+    virtualHost: true,
+  },
+});
 
 interface Rect {
-  width: number
-  height: number
+  width: number;
+  height: number;
 }
 
-const count = ref(1)
-const wrapperContentStyle = ref<CSSProperties>({})
+const count = ref(1);
+const wrapperContentStyle = ref<CSSProperties>({});
 
-const instance = getCurrentInstance()
+const instance = getCurrentInstance();
 
 const calculateCount = async () => {
-  const query = uni.createSelectorQuery().in(instance)
+  const query = uni.createSelectorQuery().in(instance);
 
   const wrapperRect = await new Promise<Rect>((resolve) => {
     query
-      .select('.water-mark-wrapper')
+      .select(".water-mark-wrapper")
       .boundingClientRect((data) => {
-        const node = Array.isArray(data) ? data[0] : data
-        resolve({ width: node.width ?? 390, height: node.height ?? 844 })
+        const node = Array.isArray(data) ? data[0] : data;
+        resolve({ width: node.width ?? 390, height: node.height ?? 844 });
       })
-      .exec()
-  })
+      .exec();
+  });
 
   const itemRect = await new Promise<Rect>((resolve) => {
     query
-      .select('.water-mark-item')
+      .select(".water-mark-item")
       .boundingClientRect((data) => {
-        const node = Array.isArray(data) ? data[0] : data
-        resolve({ width: node.width ?? 100, height: node.height ?? 100 })
+        const node = Array.isArray(data) ? data[0] : data;
+        resolve({ width: node.width ?? 100, height: node.height ?? 100 });
       })
-      .exec()
-  })
+      .exec();
+  });
 
-  const itemWidth = itemRect.width ?? 100
-  const itemHeight = itemRect.height ?? 100
+  const itemWidth = itemRect.width ?? 100;
+  const itemHeight = itemRect.height ?? 100;
 
-  const wrapperWidth = wrapperRect.width + itemWidth
-  const wrapperHeight = wrapperRect.height + itemHeight
+  const wrapperWidth = wrapperRect.width + itemWidth;
+  const wrapperHeight = wrapperRect.height + itemHeight;
 
-  const countX = Math.ceil(wrapperWidth / itemWidth)
-  const countY = Math.ceil(wrapperHeight / itemHeight)
+  const countX = Math.ceil(wrapperWidth / itemWidth);
+  const countY = Math.ceil(wrapperHeight / itemHeight);
 
   wrapperContentStyle.value = {
     width: `${wrapperWidth}px`,
     height: `${wrapperHeight}px`,
-  }
+  };
 
-  count.value = Math.ceil(countX) * Math.ceil(countY)
-}
+  count.value = Math.ceil(countX) * Math.ceil(countY);
+};
 
 watch(
   () => props.content,
   () => {
-    calculateCount()
+    calculateCount();
   },
   // #ifndef H5
   { immediate: true },
   // #endif
-)
+);
 
 onMounted(() => {
   // #ifdef H5
-  calculateCount()
+  calculateCount();
   // #endif
-})
+});
 </script>
 
 <style>

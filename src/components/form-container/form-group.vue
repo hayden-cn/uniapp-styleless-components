@@ -58,7 +58,7 @@ declare global {
 
 <script setup lang="ts" generic="Data extends Record<string, any> = any">
 import { computed, useAttrs, useSlots } from "vue";
-import type { ClassNameValue, StyleValue } from "../../type";
+import type { ClassNameValue, StyleValue } from "@/types";
 import { isNil } from "../../utils";
 
 interface Props {
@@ -150,9 +150,7 @@ const itemStyles = computed(() => {
  * 必填标签 class
  */
 const requiredClassNames = computed(() => {
-  const classNames: ClassNameValue = [
-    "form-group-required",
-  ];
+  const classNames: ClassNameValue = ["form-group-required"];
   if (props.item.classNames?.required) {
     classNames.push(props.item.classNames.required);
   }
@@ -183,9 +181,7 @@ const requiredStyles = computed(() => {
  * 分组标题 class
  */
 const titleClassNames = computed(() => {
-  const classNames: ClassNameValue = [
-    "form-group-title",
-  ];
+  const classNames: ClassNameValue = ["form-group-title"];
   if (props.item.classNames?.title) {
     classNames.push(props.item.classNames.title);
   }
