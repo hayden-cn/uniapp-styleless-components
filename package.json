@@ -14,6 +14,14 @@
   ],
   "author": "hayden",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hayden-cn/uniapp-styleless-components.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hayden-cn/uniapp-styleless-components/issues"
+  },
+  "homepage": "https://github.com/hayden-cn/uniapp-styleless-components#readme",
   "files": [
     "dist"
   ],
