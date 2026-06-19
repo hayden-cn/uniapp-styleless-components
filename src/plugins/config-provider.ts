@@ -82,6 +82,25 @@ export function useConfig(
   cover: ConfigProviderOptions = {},
 ): Required<ConfigProviderOptions> {
   const injectConfig = inject(configKey);
+  if (!injectConfig) {
+    const warnMessage = `\
+未获取到 config 配置，程序可能未正确初始化。
+检查是 main.ts/js 否以下配置
+import { createConfigProvider } from "uniapp-styleless-components";
+import appPagesConfig from "@/pages.json";
+
+export function createApp() {
+  const app = createSSRApp(App);
+
+  app.use(createConfigProvider(), {
+    pageContainer: {
+      appPagesConfig: appPagesConfig,
+    }
+  });
+}
+`;
+    console.warn(warnMessage);
+  }
   const mergedConfig = defaultsDeep({}, cover, injectConfig);
   provide(configKey, mergedConfig);
   return mergedConfig;
