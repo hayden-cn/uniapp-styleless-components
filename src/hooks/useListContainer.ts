@@ -1,6 +1,7 @@
+import { cloneDeep, debounce, defaultsDeep } from "lodash-es";
 import { computed, type MaybeRefOrGetter, ref, toValue, watch } from "vue";
 import { useConfig } from "../plugins/config-provider";
-import { cloneDeep, debounce, defaultsDeep, toastError } from "../utils";
+import { toastError } from "../utils";
 
 declare const DataTypeSymbol: unique symbol;
 
@@ -174,15 +175,15 @@ export function useListContainer<
         "resolveResponse"
       >,
 ) {
-  const locale = useConfig("locale", {
-    noData: "暂无数据",
-    loading: "加载中...",
-    unknownError: "未知错误",
-    notice: "提示",
-    warning: "警告",
-  });
+  // const locale = useConfig("locale", {
+  //   noData: "暂无数据",
+  //   loading: "加载中...",
+  //   unknownError: "未知错误",
+  //   notice: "提示",
+  //   warning: "警告",
+  // });
 
-  const config = useConfig("listContainerHook", {
+  const { listContainer } = useConfig({
     defaultPageSize: 10,
     defaultQueryParams: {},
     loadingMask: locale.loading,
@@ -201,11 +202,11 @@ export function useListContainer<
 
   type Options = RequiredByKeys<
     ListContainerOptions<Params, Data, Paging, Response>,
-    RequiredKeys<typeof config>
+    RequiredKeys<typeof listContainer>
   >;
 
   const mergedConfig = computed<Options>(() => {
-    return defaultsDeep({}, options, config);
+    return defaultsDeep({}, options, listContainer);
   });
 
   const {

@@ -48,7 +48,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import type { StyleValue } from "@/types";
+import type { StyleValue } from "../../types";
 
 interface Props {
   active: boolean;

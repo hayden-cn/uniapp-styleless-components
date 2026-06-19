@@ -1,3 +1,5 @@
 allowBuilds:
   core-js-pure: false
   esbuild: false
+overrides:
+  vue: 3.4.21

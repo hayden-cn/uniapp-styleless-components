@@ -60,8 +60,8 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
-import { usePageContainer } from "@/hooks/usePageContainer.js";
-import type { ClassNameValue, Semantic, StyleValue } from "@/types.js";
+import { usePageContainer } from "../../hooks/usePageContainer";
+import type { ClassNameValue, Semantic, StyleValue } from "../../types";
 import customNavigationBar from "./custom-navigation-bar.vue";
 import customTabbar from "./custom-tabbar.vue";
 import customWaiting from "./custom-waiting.vue";

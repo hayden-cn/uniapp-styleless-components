@@ -61,8 +61,8 @@ import {
   type PropType,
   useAttrs,
 } from "vue";
-import { baseProps } from "./base.js";
-import { type FieldItem, FieldType } from "./common.js";
+import { baseProps } from "./base";
+import { type FieldItem, FieldType } from "./common";
 import datePicker from "./date-picker/date-picker.vue";
 import emptyContent from "./empty-content/empty-content.vue";
 import logicInput from "./logic-input/logic-input.vue";

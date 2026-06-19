@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import type { ClassNameValue } from "@/types";
+import type { ClassNameValue } from "../../../types";
 import { logicInputProps } from "./logic-input";
 
 type LogicValue = string | number | boolean;

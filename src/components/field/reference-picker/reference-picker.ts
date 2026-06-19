@@ -9,7 +9,7 @@ import type { textInputProps } from "../text-input/text-input";
 /**
  * 参照字段
  */
-interface ReferenceFieldProps {
+export interface ReferenceFieldProps {
   id?: string;
   code?: string;
   name?: string;
@@ -18,7 +18,7 @@ interface ReferenceFieldProps {
 /**
  * 通过 url 查询参数透传的设置
  */
-interface ReferenceParameters {
+export interface ReferenceParameters {
   title?: string;
   multiple?: boolean;
   multipleMode?: "array" | "comma";
@@ -27,14 +27,14 @@ interface ReferenceParameters {
   showSearch?: boolean;
 }
 
-type SearchOptions = ExtractPropTypes<typeof textInputProps> & {
+export type SearchOptions = ExtractPropTypes<typeof textInputProps> & {
   field?: string;
 };
 
 /**
  * 通过 event channel 透传的设置
  */
-interface ReferenceOptions {
+export interface ReferenceOptions {
   dataSource?: string;
   queryParams?: Record<string, any>;
   requestMethod?: "get" | "post";

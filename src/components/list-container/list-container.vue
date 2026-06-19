@@ -27,10 +27,7 @@
           <slot name="item" :item="item" :index="index"></slot>
         </view>
 
-        <view
-          v-show="items.length === 0"
-          class="list-container-empty"
-        >
+        <view v-show="items.length === 0" class="list-container-empty">
           <view class="list-container-empty-inner">
             <slot name="empty">
               <view class="list-container-empty-content">
@@ -60,37 +57,37 @@
 
 <script lang="ts">
 interface ListContainerOptions<Data extends AnyObject> {
-  items?: Data[]
-  rowKey?: string
-  lowerThreshold?: number | string
-  refresherEnabled?: boolean
-  scrollTop?: number | string
-  refresherThreshold?: number
-  refresherBackground?: string
-  refresherTriggered?: boolean
-  refresh?: (e?: UniEvent) => Promise<void>
-  loadMoreTriggered?: boolean
-  noMoreTriggered?: boolean
-  noMoreContent?: string
-  loadMoreContent?: string
-  loadMore?: (e: UniEvent) => Promise<void>
-  onScroll?: (e: UniEvent) => void | Promise<void>
+  items?: Data[];
+  rowKey?: string;
+  lowerThreshold?: number | string;
+  refresherEnabled?: boolean;
+  scrollTop?: number | string;
+  refresherThreshold?: number;
+  refresherBackground?: string;
+  refresherTriggered?: boolean;
+  refresh?: (e?: UniEvent) => Promise<void>;
+  loadMoreTriggered?: boolean;
+  noMoreTriggered?: boolean;
+  noMoreContent?: string;
+  loadMoreContent?: string;
+  loadMore?: (e: UniEvent) => Promise<void>;
+  onScroll?: (e: UniEvent) => void | Promise<void>;
 }
 
 declare global {
-  type ListContainerProps<Data extends AnyObject> = ListContainerOptions<Data>
+  type ListContainerProps<Data extends AnyObject> = ListContainerOptions<Data>;
 }
 </script>
 
 <script setup lang="ts" generic="Data extends AnyObject">
 import { useConfig } from "../../plugins/config-provider";
 
-interface Props extends ListContainerOptions<Data> {
-  classNames?: Semantic<SemanticDOM, ClassNameValue>
-  styles?: Semantic<SemanticDOM, StyleValue>
+export interface Props extends ListContainerOptions<Data> {
+  classNames?: Semantic<SemanticDOM, ClassNameValue>;
+  styles?: Semantic<SemanticDOM, StyleValue>;
 }
 
-type SemanticDOM = 'root' | 'content' | 'item'
+type SemanticDOM = "root" | "content" | "item";
 
 const locale = useConfig("locale", {
   noData: "暂无数据",
@@ -105,15 +102,15 @@ const props = withDefaults(defineProps<Props>(), {
   lowerThreshold: 50,
   refresherThreshold: 50,
   refresherEnabled: true,
-  rowKey: 'id',
-  refresherBackground: 'transparent',
-  noMoreContent: '-- 没有更多了 --',
-  loadMoreContent: '上拉加载更多',
-})
+  rowKey: "id",
+  refresherBackground: "transparent",
+  noMoreContent: "-- 没有更多了 --",
+  loadMoreContent: "上拉加载更多",
+});
 
 defineOptions({
   inheritAttrs: false,
-})
+});
 </script>
 
 <style>

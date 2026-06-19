@@ -9,6 +9,9 @@ import {
 } from "vue";
 
 export type ConfigProviderOptions = {
+  /**
+   * 页面容器
+   */
   pageContainer?: {
     /**
      * 页面配置项，pages.json 内容
@@ -19,6 +22,10 @@ export type ConfigProviderOptions = {
      */
     init?: () => Promise<void>;
   };
+  /**
+   * 列表容器
+   */
+  listContainer?: {};
 };
 
 const configKey = Symbol("ConfigProvider") as InjectionKey<

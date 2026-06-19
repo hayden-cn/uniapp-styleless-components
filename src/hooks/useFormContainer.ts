@@ -1,6 +1,6 @@
+import { isNil, remove } from "lodash-es";
 import { computed, type MaybeRefOrGetter, ref, toValue } from "vue";
 import { SilenceError } from "../errors";
-import { isNil, remove } from "../utils";
 
 interface FormContainerOptions<Data extends Record<string, any>> {
   data: MaybeRefOrGetter<Data>;

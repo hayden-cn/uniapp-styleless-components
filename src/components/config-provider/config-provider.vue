@@ -6,7 +6,7 @@
 import {
   type ConfigProviderOptions,
   useConfig,
-} from "@/plugins/config-provider";
+} from "../../plugins/config-provider";
 
 interface ConfigProviderProps {
   config: ConfigProviderOptions;

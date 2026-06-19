@@ -42,7 +42,7 @@ import type {
   ComponentSize,
   Semantic,
   StyleValue,
-} from "@/types";
+} from "../../types";
 
 interface Props {
   /**

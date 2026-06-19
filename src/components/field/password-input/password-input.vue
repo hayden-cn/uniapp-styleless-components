@@ -32,8 +32,8 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import type { ClassNameValue } from "@/types";
 import { useField } from "../../../hooks/useField";
+import type { ClassNameValue } from "../../../types";
 import { passwordInputProps } from "./password-input";
 
 const props = defineProps(passwordInputProps);

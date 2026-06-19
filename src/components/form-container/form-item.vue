@@ -80,6 +80,7 @@ declare global {
 </script>
 
 <script setup lang="ts" generic="Data extends Record<string, any> = object">
+import { isNil } from "lodash-es";
 import {
   computed,
   getCurrentInstance,
@@ -89,10 +90,9 @@ import {
   useSlots,
   watch,
 } from "vue";
-import type { ClassNameValue, StyleValue } from "@/types";
-import { isNil } from "../../utils";
+import type { ClassNameValue, StyleValue } from "../../types";
 
-interface Props {
+export interface Props {
   /**
    * 表单项配置
    */

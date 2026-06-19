@@ -2,15 +2,8 @@
   "name": "uniapp-styleless-components",
   "version": "1.0.0",
   "description": "A styleless component library for uni-app, providing unstyled Vue 3 components with semantic classNames/styles props for full customization.",
-  "main": "src/index.ts",
-  "types": "src/index.ts",
-  "exports": {
-    ".": "./src/index.ts",
-    "./types": "./src/types.ts",
-    "./components/*": "./src/components/*"
-  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "unbuild"
   },
   "keywords": [
     "uniapp",
@@ -22,8 +15,7 @@
   "author": "hayden",
   "license": "MIT",
   "files": [
-    "src",
-    "tsconfig.json"
+    "dist"
   ],
   "devEngines": {
     "packageManager": {
@@ -33,20 +25,55 @@
     }
   },
   "type": "module",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs"
+    },
+    "./types": {
+      "types": "./dist/types.d.ts",
+      "import": "./dist/types.mjs"
+    },
+    "./errors": {
+      "types": "./dist/errors.d.ts",
+      "import": "./dist/errors.mjs"
+    },
+    "./utils": {
+      "types": "./dist/utils.d.ts",
+      "import": "./dist/utils.mjs"
+    },
+    "./hooks/*": {
+      "types": "./dist/hooks/*.d.ts",
+      "import": "./dist/hooks/*"
+    },
+    "./plugins/*": {
+      "types": "./dist/plugins/*.d.ts",
+      "import": "./dist/plugins/*"
+    },
+    "./components/*": {
+      "types": "./dist/components/*.d.ts",
+      "import": "./dist/components/*"
+    }
+  },
   "devDependencies": {
     "@biomejs/biome": "^2.4.16",
     "@dcloudio/types": "^3.4.31",
     "@dcloudio/uni-app": "3.0.0-alpha-5010320260611001",
     "@types/lodash-es": "^4.17.12",
-    "typescript": "^6.0.3",
+    "typescript": "^5.9.2",
     "typescript-builtins-extended": "^0.2.1",
-    "vue": "^3.4.21"
+    "unbuild": "^3.6.1",
+    "vue": "^3.4.21",
+    "vue-sfc-transformer": "^0.1.1",
+    "vue-tsc": "^3.3.5"
+  },
+  "dependencies": {
+    "lodash-es": "^4.18.1"
   },
   "peerDependencies": {
     "@dcloudio/uni-app": ">=3.0.0",
     "vue": "^3.4.21"
-  },
-  "dependencies": {
-    "lodash-es": "^4.18.1"
   }
 }

@@ -29,4 +29,6 @@ jobs:
 
       - run: pnpm install
 
+      - run: pnpm build
+
       - run: pnpm publish

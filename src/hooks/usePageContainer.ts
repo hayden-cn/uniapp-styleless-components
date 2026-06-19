@@ -1,5 +1,33 @@
 import { computed } from "vue";
-import { useBadge, useConfig } from "@/plugins/config-provider";
+import { useBadge, useConfig } from "../plugins/config-provider";
+
+interface PageInstance {
+  $page: {
+    fullPath: string;
+  };
+}
+
+interface Page {
+  path: string;
+  needLogin?: boolean;
+  style?: {
+    navigationBarBackgroundColor?: string;
+    navigationBarTextStyle?: string;
+    navigationBarTitleText?: string;
+    navigationStyle?: "default" | "custom";
+    backgroundTextStyle?: "dark" | "light";
+    enablePullDownRefresh?: boolean;
+    onReachBottomDistance?: number;
+  };
+}
+
+interface PageRoute extends Page {
+  isTabBar: boolean;
+  isHomePage: boolean;
+  isLoginPage: boolean;
+  fullPath: string;
+  route: string;
+}
 
 export const usePageContainer = () => {
   const windowInfo = computed(() => {
@@ -26,34 +54,6 @@ export const usePageContainer = () => {
 
   const { pageContainer } = useConfig();
   const badge = useBadge();
-
-  interface PageInstance {
-    $page: {
-      fullPath: string;
-    };
-  }
-
-  interface Page {
-    path: string;
-    needLogin?: boolean;
-    style?: {
-      navigationBarBackgroundColor?: string;
-      navigationBarTextStyle?: string;
-      navigationBarTitleText?: string;
-      navigationStyle?: "default" | "custom";
-      backgroundTextStyle?: "dark" | "light";
-      enablePullDownRefresh?: boolean;
-      onReachBottomDistance?: number;
-    };
-  }
-
-  interface PageRoute extends Page {
-    isTabBar: boolean;
-    isHomePage: boolean;
-    isLoginPage: boolean;
-    fullPath: string;
-    route: string;
-  }
 
   /**
    * 获取当前路由

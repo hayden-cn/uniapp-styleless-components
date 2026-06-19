@@ -69,9 +69,9 @@ import type {
   ComponentSize,
   Semantic,
   StyleValue,
-} from "@/types";
+} from "../../types";
 
-interface Props {
+export interface Props {
   defaultValue?: Value;
   items: TabItem<Value>[];
   type?: TabStyleType;

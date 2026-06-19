@@ -8,14 +8,23 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "esModuleInterop": true,
-    "lib": ["ESNext", "DOM"],
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
     "skipLibCheck": true,
     "noEmit": true,
-    "paths": {
-      "@/*": ["./src/*"]
-    },
-    "types": ["@dcloudio/types"]
+    "types": [
+      "@dcloudio/types"
+    ]
   },
-  "include": ["src/**/*.ts", "src/**/*.vue", "src/global.d.ts"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.vue",
+    "src/global.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

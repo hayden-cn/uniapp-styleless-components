@@ -26,8 +26,8 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import type { ClassNameValue } from "@/types";
 import { useField } from "../../../hooks/useField";
+import type { ClassNameValue } from "../../../types";
 import { numberInputProps } from "./number-input";
 
 const props = defineProps(numberInputProps);
@@ -76,5 +76,3 @@ const bindEvent = (target: EventTarget, e: any) => {
   props[target]?.(e);
 };
 </script>
-
-

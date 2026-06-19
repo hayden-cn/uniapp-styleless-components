@@ -27,10 +27,11 @@
 </template>
 
 <script setup lang="ts">
+import { isNil } from "lodash-es";
 import { computed, toValue } from "vue";
-import type { ClassNameValue } from "@/types";
 import { useField } from "../../../hooks/useField";
-import { isNil, stringifyQueryParams } from "../../../utils";
+import type { ClassNameValue } from "../../../types";
+import { stringifyQueryParams } from "../../../utils";
 import { referencePickerProps } from "./reference-picker";
 
 const props = defineProps(referencePickerProps);

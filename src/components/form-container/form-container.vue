@@ -244,9 +244,14 @@ declare global {
 <script setup lang="ts" generic="Data extends Record<string, any> = object">
 import { omit, pick } from "lodash-es";
 import { computed, reactive } from "vue";
-import { ClassNameValue, Semantic, StyleValue, TextAlignType } from "@/types";
+import {
+  ClassNameValue,
+  Semantic,
+  StyleValue,
+  TextAlignType,
+} from "../../types";
 
-interface Props extends BaseFormItemProps {
+export interface Props extends BaseFormItemProps {
   /**
    * 表单数据项
    */
