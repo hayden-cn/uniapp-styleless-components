@@ -30,7 +30,6 @@
 import { isNil } from "lodash-es";
 import { computed, toValue } from "vue";
 import { useField } from "../../../hooks/useField";
-import type { ClassNameValue } from "../../../types";
 import { stringifyQueryParams } from "../../../utils";
 import { referencePickerProps } from "./reference-picker";
 

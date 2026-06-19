@@ -1,5 +1,4 @@
 import { computed, type Ref } from "vue";
-import type { ClassNameValue } from "../types";
 
 interface UseFieldOptions {
   disabled?: boolean;

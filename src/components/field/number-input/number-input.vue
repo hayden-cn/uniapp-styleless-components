@@ -27,7 +27,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useField } from "../../../hooks/useField";
-import type { ClassNameValue } from "../../../types";
 import { numberInputProps } from "./number-input";
 
 const props = defineProps(numberInputProps);

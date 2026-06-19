@@ -30,7 +30,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useField } from "../../../hooks/useField";
-import type { ClassNameValue } from "../../../types";
 import { optionPickerProps } from "./option-picker";
 
 const props = defineProps(optionPickerProps);

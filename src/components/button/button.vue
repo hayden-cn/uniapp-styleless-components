@@ -32,17 +32,6 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import type {
-  ButtonColorType,
-  ButtonOpenActionType,
-  ButtonShapeType,
-  ButtonType,
-  ButtonVariantType,
-  ClassNameValue,
-  ComponentSize,
-  Semantic,
-  StyleValue,
-} from "../../types";
 
 interface Props {
   /**

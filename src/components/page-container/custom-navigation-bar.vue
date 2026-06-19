@@ -24,7 +24,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { usePageContainer } from "../../hooks/usePageContainer";
-import type { ClassNameValue, Semantic, StyleValue } from "../../types";
 
 type SemanticDOM = "root";
 

@@ -59,7 +59,6 @@ declare global {
 <script setup lang="ts" generic="Data extends Record<string, any> = any">
 import { isNil } from "lodash-es";
 import { computed, useAttrs, useSlots } from "vue";
-import type { ClassNameValue, StyleValue } from "../../types";
 
 export interface Props {
   /**

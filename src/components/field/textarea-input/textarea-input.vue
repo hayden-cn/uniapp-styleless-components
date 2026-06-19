@@ -34,7 +34,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useField } from "../../../hooks/useField";
-import type { ClassNameValue } from "../../../types";
 import { textareaInputProps } from "./textarea-input";
 
 const props = defineProps(textareaInputProps);

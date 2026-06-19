@@ -64,12 +64,6 @@ import {
   ref,
   watch,
 } from "vue";
-import type {
-  ClassNameValue,
-  ComponentSize,
-  Semantic,
-  StyleValue,
-} from "../../types";
 
 export interface Props {
   defaultValue?: Value;

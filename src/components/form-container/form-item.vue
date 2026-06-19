@@ -90,7 +90,6 @@ import {
   useSlots,
   watch,
 } from "vue";
-import type { ClassNameValue, StyleValue } from "../../types";
 
 export interface Props {
   /**
