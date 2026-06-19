@@ -66,12 +66,52 @@ import customTabbar from "./custom-tabbar.vue";
 import customWaiting from "./custom-waiting.vue";
 
 interface Props {
+  /**
+   * 允许滚动
+   *
+   * @default false
+   */
   scrollable?: boolean;
+  /**
+   * 显示导航栏
+   *
+   * @default true
+   */
   showNavigationBar?: boolean;
+  /**
+   * 显示返回按钮
+   *
+   * @default true
+   */
   showBackBtn?: boolean;
+  /**
+   * 显示底部安全区域
+   *
+   * @default true
+   */
   showBottomSafeArea?: boolean;
+  /**
+   * 语义化 classname 结构
+   *
+   * - root 根元素
+   * - content 内容区域
+   */
   classNames?: Semantic<SemanticDOM, ClassNameValue>;
+  /**
+   * 语义化 style 结构
+   *
+   * - root 根元素
+   * - content 内容区域
+   */
   styles?: Semantic<SemanticDOM, StyleValue>;
+  /**
+   * 根元素 classname 相当于 classNames.root
+   */
+  class?: ClassNameValue;
+  /**
+   * 根元素 style 相当于 styles.root
+   */
+  style?: StyleValue;
 }
 
 type SemanticDOM = "root" | "content";
